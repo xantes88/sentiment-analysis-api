@@ -1,6 +1,0 @@
-fastapi
-uvicorn
-transformers
-torch
-prometheus_client
-tensorflow
