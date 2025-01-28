@@ -1,8 +1,37 @@
-global:
-  scrape_interval: 15s
+version: '3.7'
 
-scrape_configs:
-  - job_name: 'fastapi'
-    metrics_path: '/metrics'
-    static_configs:
-      - targets: ['fastapi:8000']
+services:
+  # FastAPI Service
+  fastapi:
+    build: .
+    image: xantes88/sentiment-analysis-api:latest
+    ports:
+      - "8000:80"  # Mappa la porta 80 del container sulla porta 8000 dell'host
+    environment:
+      - ENVIRONMENT=production  # Variabile d'ambiente, se necessario
+    networks:
+      - monitoring
+
+  # Prometheus Service
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Monta il file di configurazione di Prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - monitoring
+
+  # Grafana Service
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Imposta la password di amministratore di Grafana
+    ports:
+      - "3000:3000"  # Porta per accedere a Grafana
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
