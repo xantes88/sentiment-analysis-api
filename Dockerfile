@@ -1,20 +1,17 @@
-# Utilizza un'immagine Python di base
+# Usa l'immagine base Python
 FROM python:3.8-slim
 
-# Imposta la directory di lavoro
+# Imposta la directory di lavoro all'interno del container
 WORKDIR /app
 
-# Copia il file di dipendenze
-COPY requirements.txt .
+# Copia il file requirements.txt dalla cartella sentiment_analysis
+COPY sentiment_analysis/requirements.txt .
 
 # Installa le dipendenze
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-# Copia il codice dell'app
+# Copia tutto il codice del repository nella directory di lavoro
 COPY . .
 
-# Espone la porta su cui l'app ascolta
-EXPOSE 8000
-
-# Comando per avviare l'app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Imposta il comando di esecuzione dell'app con Uvicorn
+CMD ["uvicorn", "sentiment_analysis.main:app", "--host", "0.0.0.0", "--port", "80"]
