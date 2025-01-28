@@ -1,0 +1,45 @@
+name: CI/CD Pipeline for Sentiment Analysis API
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Tests
+        run: |
+          pytest tests/
+
+      - name: Build Docker Image
+        run: |
+          docker build -t sentiment-analysis-api .
+
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker push sentiment-analysis-api:latest
+
+      - name: Deploy to HuggingFace
+        run: |
+          huggingface-cli repo create sentiment-analysis-api
+          git remote add origin https://huggingface.co/$HUGGINGFACE_USERNAME/sentiment-analysis-api
+          git push -u origin main
