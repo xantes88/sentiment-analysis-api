@@ -4,4 +4,4 @@ global:
 scrape_configs:
   - job_name: 'fastapi'
     static_configs:
-      - targets: ['fastapi:80']  # Indica che Prometheus deve monitorare FastAPI sulla porta 80
+      - targets: ['fastapi:8000']  # Monitoraggio di FastAPI sulla porta 8000
