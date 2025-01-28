@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  # Servizio FastAPI
+  fastapi:
+    image: xantes88/sentiment-analysis-api:latest
+    ports:
+      - '8000:80'  # Espone la porta 80 sulla porta 8000 del tuo host
+
+  # Servizio Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - '9090:9090'  # Esponi Prometheus sulla porta 9090
+
+  # Servizio Grafana
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Password predefinita
+    ports:
+      - '3000:3000'  # Esponi Grafana sulla porta 3000
