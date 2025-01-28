@@ -93,5 +93,3 @@ jobs:
       - name: Monitor metrics in Grafana
         run: |
           echo "Grafana and Prometheus are up and running, check them at http://localhost:3000"
-        run: |
-          echo "Grafana and Prometheus are up and running, check them at http://localhost:3000"
