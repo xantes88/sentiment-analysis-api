@@ -1,17 +1,20 @@
-# Usa l'immagine base Python
+# Step 1: Usa un'immagine di base ufficiale di Python
 FROM python:3.8-slim
 
-# Imposta la directory di lavoro all'interno del container
+# Step 2: Imposta la directory di lavoro
 WORKDIR /app
 
-# Copia il file requirements.txt dalla cartella sentiment_analysis
-COPY sentiment_analysis/requirements.txt .
+# Step 3: Copia i file di requisiti per installare le dipendenze
+COPY sentiment_analysis/requirements.txt /app/
 
-# Installa le dipendenze
-RUN pip install -r requirements.txt
+# Step 4: Installa le dipendenze
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia tutto il codice del repository nella directory di lavoro
-COPY . .
+# Step 5: Copia il codice dell'app nella directory di lavoro
+COPY sentiment_analysis /app/
 
-# Imposta il comando di esecuzione dell'app con Uvicorn
-CMD ["uvicorn", "sentiment_analysis.main:app", "--host", "0.0.0.0", "--port", "80"]
+# Step 6: Esponi la porta su cui FastAPI sarà in ascolto
+EXPOSE 80
+
+# Step 7: Definisci il comando per eseguire FastAPI
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
