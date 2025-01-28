@@ -33,3 +33,4 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: |
           docker push sentiment-analysis-api:latest
+
