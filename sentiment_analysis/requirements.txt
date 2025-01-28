@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+transformers
+torch
+pydantic
+prometheus-fastapi-instrumentator
+apache-airflow
+grafana
+requests
