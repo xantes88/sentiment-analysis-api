@@ -42,22 +42,44 @@ jobs:
         run: |
           docker push xantes88/sentiment-analysis-api:latest
 
-      # Step 7: Run Prometheus, Grafana, and FastAPI Containers
+      # Step 7: Set up Docker Compose (for Prometheus, Grafana, FastAPI)
+      - name: Set up Docker Compose
+        run: |
+          echo "version: '3.7'" > docker-compose.yml
+          echo "services:" >> docker-compose.yml
+          echo "  fastapi:" >> docker-compose.yml
+          echo "    image: xantes88/sentiment-analysis-api:latest" >> docker-compose.yml
+          echo "    ports:" >> docker-compose.yml
+          echo "      - '8000:80'" >> docker-compose.yml
+          echo "  prometheus:" >> docker-compose.yml
+          echo "    image: prom/prometheus:latest" >> docker-compose.yml
+          echo "    volumes:" >> docker-compose.yml
+          echo "      - ./prometheus.yml:/etc/prometheus/prometheus.yml" >> docker-compose.yml
+          echo "    ports:" >> docker-compose.yml
+          echo "      - '9090:9090'" >> docker-compose.yml
+          echo "  grafana:" >> docker-compose.yml
+          echo "    image: grafana/grafana:latest" >> docker-compose.yml
+          echo "    environment:" >> docker-compose.yml
+          echo "      - GF_SECURITY_ADMIN_PASSWORD=admin" >> docker-compose.yml
+          echo "    ports:" >> docker-compose.yml
+          echo "      - '3000:3000'" >> docker-compose.yml
+
+      # Step 8: Run Prometheus, Grafana, and FastAPI Containers
       - name: Start Prometheus, Grafana, and FastAPI Containers
         run: |
           docker-compose -f docker-compose.yml up -d
 
-      # Step 8: Wait for Prometheus and Grafana to start
+      # Step 9: Wait for Prometheus and Grafana to start
       - name: Wait for Prometheus and Grafana to start
         run: |
           sleep 30
 
-      # Step 9: Test FastAPI app
+      # Step 10: Test FastAPI app
       - name: Test FastAPI app
         run: |
           curl http://localhost:8000
 
-      # Step 10: Monitor metrics in Grafana (Optional)
+      # Step 11: Monitor metrics in Grafana (Optional)
       - name: Monitor metrics in Grafana
         run: |
           echo "Grafana and Prometheus are up and running, check them at http://localhost:3000"
