@@ -60,7 +60,7 @@ jobs:
           echo "  fastapi:" >> docker-compose.yml
           echo "    image: xantes88/sentiment-analysis-api:latest" >> docker-compose.yml
           echo "    ports:" >> docker-compose.yml
-          echo "      - '8000:80'" >> docker-compose.yml
+          echo "      - '8000:8000'" >> docker-compose.yml  # Correzione della porta
           echo "  prometheus:" >> docker-compose.yml
           echo "    image: prom/prometheus:latest" >> docker-compose.yml
           echo "    volumes:" >> docker-compose.yml
@@ -87,7 +87,7 @@ jobs:
       # Step 12: Test FastAPI app
       - name: Test FastAPI app
         run: |
-          curl http://localhost:8000
+          curl http://localhost:8000  # A questo punto il container dovrebbe essere in esecuzione
 
       # Step 13: Monitor metrics in Grafana (Optional)
       - name: Monitor metrics in Grafana
