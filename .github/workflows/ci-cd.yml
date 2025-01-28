@@ -25,7 +25,6 @@ jobs:
         run: |
           pip install -r sentiment_analysis/requirements.txt
 
-
       # Step 4: Build Docker Image
       - name: Build Docker Image
         run: |
@@ -42,3 +41,23 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: |
           docker push xantes88/sentiment-analysis-api:latest
+
+      # Step 7: Run Prometheus, Grafana, and FastAPI Containers
+      - name: Start Prometheus, Grafana, and FastAPI Containers
+        run: |
+          docker-compose -f docker-compose.yml up -d
+
+      # Step 8: Wait for Prometheus and Grafana to start
+      - name: Wait for Prometheus and Grafana to start
+        run: |
+          sleep 30
+
+      # Step 9: Test FastAPI app
+      - name: Test FastAPI app
+        run: |
+          curl http://localhost:8000
+
+      # Step 10: Monitor metrics in Grafana (Optional)
+      - name: Monitor metrics in Grafana
+        run: |
+          echo "Grafana and Prometheus are up and running, check them at http://localhost:3000"
