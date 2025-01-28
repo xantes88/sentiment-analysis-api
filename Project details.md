@@ -59,7 +59,6 @@ Prometheus and Grafana Setup:
 
 Configuring Prometheus to scrape metrics from FastAPI and setting up Grafana dashboards required fine-tuning. However, once properly configured, the integration was seamless and provided useful insights into API performance.
 
-An overview of the project is the following:
 
 1. FastAPI: The core of the application
 Main function: FastAPI is the web framework used to build the API that provides sentiment analysis services. Users can send texts via a POST request to an endpoint, and the app will return the sentiment (positive, negative, or neutral) associated with that text.
