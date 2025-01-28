@@ -1,0 +1,3 @@
+spaces:
+  - model: "cardiffnlp/twitter-roberta-base-sentiment-latest"
+  - url: "http://localhost:8000"  # URL del servizio FastAPI che hai deployato localmente
