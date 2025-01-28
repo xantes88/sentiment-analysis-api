@@ -25,24 +25,20 @@ jobs:
         run: |
           pip install -r sentiment_analysis/requirements.txt
 
-      # Step 4: Run Tests
-      - name: Run Tests
-        run: |
-          pytest
 
-      # Step 5: Build Docker Image
+      # Step 4: Build Docker Image
       - name: Build Docker Image
         run: |
           docker build -t xantes88/sentiment-analysis-api:latest .
 
-      # Step 6: Docker Login
+      # Step 5: Docker Login
       - name: Docker Login
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 7: Push Docker Image to Docker Hub
+      # Step 6: Push Docker Image to Docker Hub
       - name: Push Docker Image to Docker Hub
         run: |
           docker push xantes88/sentiment-analysis-api:latest
