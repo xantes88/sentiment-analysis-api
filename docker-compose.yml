@@ -1,18 +1,8 @@
-version: '3.7'
-services:
-  fastapi:
-    image: xantes88/sentiment-analysis-api:latest
-    ports:
-      - '8000:80'
-  prometheus:
-    image: prom/prometheus:latest
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - '9090:9090'
-  grafana:
-    image: grafana/grafana:latest
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    ports:
-      - '3000:3000'
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'fastapi'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['fastapi:8000']
