@@ -1,0 +1,7 @@
+global:
+  scrape_interval: 15s  # Frequenza con cui Prometheus raccoglie i dati
+
+scrape_configs:
+  - job_name: 'fastapi'
+    static_configs:
+      - targets: ['fastapi:80']  # Indica che Prometheus deve monitorare FastAPI sulla porta 80
