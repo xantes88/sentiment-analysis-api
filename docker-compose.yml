@@ -2,26 +2,20 @@ version: '3.7'
 
 services:
   fastapi:
-    image: xantes88/sentiment-analysis-api:latest  # Immagine FastAPI (da Docker Hub o locale)
+    image: xantes88/sentiment-analysis-api:latest  # Image for FastAPI (from Docker Hub or local)
     ports:
-      - '8000:8000'  # Porta FastAPI esposta sulla 8000
-    depends_on:
-      - prometheus  # Assicurati che Prometheus sia pronto prima di avviare FastAPI
+      - '8000:80'  # Expose FastAPI on port 8000
 
   prometheus:
     image: prom/prometheus:latest
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Monta il file di configurazione di Prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Mount Prometheus config file
     ports:
-      - '9090:9090'  # Porta di Prometheus
-    restart: unless-stopped
+      - '9090:9090'  # Expose Prometheus on port 9090
 
   grafana:
     image: grafana/grafana:latest
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin  # Imposta la password di amministratore
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # Set Grafana admin password
     ports:
-      - '3000:3000'  # Porta di Grafana
-    depends_on:
-      - prometheus
-    restart: unless-stopped
+      - '3000:3000'  # Expose Grafana on port 3000
