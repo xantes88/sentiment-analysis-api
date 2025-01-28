@@ -14,48 +14,38 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      # Step 2: Set up Python
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
+      # Step 2: Set up Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
 
-      # Step 3: Install Docker
-      - name: Install Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
-
-      # Step 4: Install Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r .tag_name)/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-      # Step 5: Install Dependencies
+      # Step 3: Install Dependencies
       - name: Install Dependencies
         run: |
           pip install -r sentiment_analysis/requirements.txt
 
-      # Step 6: Build Docker Image
+      # Step 4: Build Docker Image
       - name: Build Docker Image
         run: |
           docker build -t xantes88/sentiment-analysis-api:latest .
 
-      # Step 7: Docker Login
+      # Step 5: Docker Login
       - name: Docker Login
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 8: Push Docker Image to Docker Hub
+      # Step 6: Push Docker Image to Docker Hub
       - name: Push Docker Image to Docker Hub
         run: |
           docker push xantes88/sentiment-analysis-api:latest
 
-      # Step 9: Create docker-compose.yml
+      # Step 7: Download Prometheus Configuration File
+      - name: Download prometheus.yml
+        run: |
+          curl -o prometheus.yml https://github.com/xantes88/sentiment-analysis-api/raw/main/prometheus.yml
+
+      # Step 8: Create docker-compose.yml
       - name: Create docker-compose.yml
         run: |
           echo "version: '3.7'" > docker-compose.yml
@@ -77,22 +67,22 @@ jobs:
           echo "    ports:" >> docker-compose.yml
           echo "      - '3000:3000'" >> docker-compose.yml
 
-      # Step 10: Run Prometheus, Grafana, and FastAPI Containers
+      # Step 9: Run Prometheus, Grafana, and FastAPI Containers
       - name: Start Prometheus, Grafana, and FastAPI Containers
         run: |
           docker-compose -f docker-compose.yml up -d
 
-      # Step 11: Wait for Prometheus and Grafana to start
+      # Step 10: Wait for Prometheus and Grafana to start
       - name: Wait for Prometheus and Grafana to start
         run: |
           sleep 30
 
-      # Step 12: Test FastAPI app
+      # Step 11: Test FastAPI app
       - name: Test FastAPI app
         run: |
           curl http://localhost:8000
 
-      # Step 13: Monitor metrics in Grafana (Optional)
+      # Step 12: Monitor metrics in Grafana (Optional)
       - name: Monitor metrics in Grafana
         run: |
           echo "Grafana and Prometheus are up and running, check them at http://localhost:3000"
