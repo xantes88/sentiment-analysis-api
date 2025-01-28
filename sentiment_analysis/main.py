@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from transformers import pipeline
+from prometheus_fastapi_instrumentator import Instrumentator
 
 # Inizializza l'app FastAPI
 app = FastAPI(title="Sentiment Analysis API", version="1.0")
@@ -12,7 +13,7 @@ sentiment_model = pipeline("sentiment-analysis", model="cardiffnlp/twitter-rober
 class SentimentRequest(BaseModel):
     text: str
 
-# Endpoint di esempio: root
+# Endpoint di benvenuto
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Sentiment Analysis API!"}
@@ -25,3 +26,7 @@ def analyze_sentiment(request: SentimentRequest):
         return {"input_text": request.text, "sentiment": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Aggiungi il monitoraggio con Prometheus
+instrumentator = Instrumentator()
+instrumentator.instrument(app).expose(app)
