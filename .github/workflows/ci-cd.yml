@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04  # Specifica una versione di Ubuntu
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -20,7 +20,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install -r sentiment_analysis/requirements.txt
+          pip install -r requirements.txt
+
+      - name: Run Tests
+        run: |
+          pytest
 
       - name: Build Docker Image
         run: |
@@ -35,4 +39,3 @@ jobs:
       - name: Push Docker Image to Docker Hub
         run: |
           docker push xantes88/sentiment-analysis-api:latest
-
