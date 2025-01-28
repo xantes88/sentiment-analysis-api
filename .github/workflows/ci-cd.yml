@@ -45,7 +45,7 @@ jobs:
         run: |
           curl -o prometheus.yml https://github.com/xantes88/sentiment-analysis-api/raw/main/prometheus.yml
 
-      # Step 8: Run Prometheus, Grafana, and FastAPI Containers
+      # Step 8: Run Prometheus, Grafana, and FastAPI Containers using docker-compose.yml
       - name: Start Prometheus, Grafana, and FastAPI Containers
         run: |
           docker-compose -f docker-compose.yml up -d
