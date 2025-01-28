@@ -66,6 +66,3 @@ Future improvements could include:
 Enhanced Dashboard: Adding more detailed metrics and alerts in Grafana.
 Model Updates: Fine-tuning the sentiment analysis model with domain-specific data to improve accuracy.
 Deployment: Moving to a production-grade environment with Kubernetes for better orchestration and auto-scaling.
-Tools and technologies used.
-Model performance metrics and insights.
-This project combines modern AI tools with robust deployment practices to create a scalable and maintainable sentiment analysis application.
